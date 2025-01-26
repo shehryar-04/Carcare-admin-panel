@@ -3,10 +3,10 @@ import { Row, Col, Card } from 'react-bootstrap';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import IncomeChart from './IncomeChart'
-import App from './UsersByArea'
-import ServiceRequestData from './ServiceRequestData';
-import ActiveUsers from './ActiveUsers';
-import Products from './Products';
+// import App from './UsersByArea'
+// import ServiceRequestData from './ServiceRequestData';
+// import ActiveUsers from './ActiveUsers';
+// import Products from './Products';
 
 const Dashboard = () => {
   const [stats, setStats] = useState({
@@ -87,42 +87,7 @@ const Dashboard = () => {
           </Card>
         </Col>
       </Row>
-      <Row>
-        <Col md={12}>
-          <Card className="dashboard-card">
-            <Card.Body>
-              <App/>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-      <Row>
-        <Col md={12}>
-          <Card className="dashboard-card">
-            <Card.Body>
-              <ServiceRequestData/>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-      <Row>
-        <Col md={12}>
-          <Card className="dashboard-card">
-            <Card.Body>
-              <ActiveUsers/>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-      <Row>
-        <Col md={12}>
-          <Card className="dashboard-card">
-            <Card.Body>
-              <Products/>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+     
     </div>
   );
 };

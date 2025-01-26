@@ -4,8 +4,12 @@ import DashboardLayout from './components/Layout/DashboardLayout';
 import Dashboard from './pages/Dashboard';
 import Vendors from './pages/Vendors';
 import Services from './pages/Services';
-import Transactions from './pages/Transactions';
-import Settings from './pages/form-layouts/index';
+import Maps from './pages/Maps';
+import Forms from './pages/form-layouts/index';
+import Products from './pages/Products';
+import UsersByArea from './pages/UsersByArea';
+import ActiveUsers from './pages/ActiveUsers';
+import ServiceRequestData from './pages/ServiceRequestData';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/main.css';
 
@@ -33,14 +37,34 @@ function App() {
             <Services />
           </DashboardLayout>
         } />
-        <Route path="/transactions" element={
+        <Route path="/Maps" element={
           <DashboardLayout>
-            <Transactions />
+            <Maps />
           </DashboardLayout>
         } />
-        <Route path="/settings" element={
+        <Route path="/Forms" element={
           <DashboardLayout>
-            <Settings />
+            <Forms />
+          </DashboardLayout>
+        } />
+         <Route path="/Products" element={
+          <DashboardLayout>
+            <Products />
+          </DashboardLayout>
+        } />
+        <Route path="/UsersByArea" element={
+          <DashboardLayout>
+            <UsersByArea />
+          </DashboardLayout>
+        } />  
+        <Route path="/ActiveUsers" element={
+          <DashboardLayout>
+            <ActiveUsers />
+          </DashboardLayout>
+        } />
+        <Route path="/ServiceRequestData" element={
+          <DashboardLayout>
+            <ServiceRequestData />
           </DashboardLayout>
         } />
       </Routes>

@@ -18,25 +18,25 @@ const Services = () => {
   
   const fetchRequests = async () => {  
     try {  
-      const requestsSnapshot = await getDocs(collection(db, 'serviceRequests'));  
-      const requestsList = requestsSnapshot.docs.map(doc => ({  
-        id: doc.id,  
-        ...doc.data()  
-      }));  
+      const response = await fetch('https://carcarebaked.azurewebsites.net/api/service-request');  
+      if (!response.ok) {  
+        throw new Error('Failed to fetch service requests');  
+      }  
+      const requestsList = await response.json();  
       setRequests(requestsList);  
     } catch (error) {  
       console.error('Error fetching service requests:', error);  
       setError('Failed to fetch service requests');  
     }  
   };  
-  
+    
   const fetchVendors = async () => {  
     try {  
-      const vendorsSnapshot = await getDocs(collection(db, 'vendors'));  
-      const vendorsList = vendorsSnapshot.docs.map(doc => ({  
-        id: doc.id,  
-        ...doc.data()  
-      }));  
+      const response = await fetch('https://carcarebaked.azurewebsites.net/api/vendors');  
+      if (!response.ok) {  
+        throw new Error('Failed to fetch vendors');  
+      }  
+      const vendorsList = await response.json();  
       setVendors(vendorsList);  
     } catch (error) {  
       console.error('Error fetching vendors:', error);  

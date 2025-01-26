@@ -19,30 +19,6 @@ const Products = () => {
     }
   };
 
-  // Function to update product tags in Firestore
-  const updatetags = async (productId, action) => {
-    try {
-      const productDoc = doc(db, "products", productId);
-      const product = products.find(p => p.id === productId);
-
-      if (action === 'increase') {
-        product.tags += 1;
-      } else if (action === 'decrease' && product.tags > 0) {
-        product.tags -= 1;
-      }
-
-      await updateDoc(productDoc, { tags: product.tags });
-      setProducts(prevProducts =>
-        prevProducts.map(p =>
-          p.id === productId ? { ...p, tags: product.tags } : p
-        )
-      );
-    } catch (error) {
-      console.error('Error updating tags:', error);
-      setError('Failed to update tags');
-    }
-  };
-
   useEffect(() => {
     fetchProducts(); // Fetch products when component mounts
   }, []);
@@ -61,7 +37,6 @@ const Products = () => {
             <th>Category</th>
             <th>Price</th>
             <th>Description</th>
-            <th>Quantity</th> {/* Removed Tags column */}
           </tr>
         </thead>
         <tbody>
@@ -80,23 +55,6 @@ const Products = () => {
                 <td>{product.category}</td>
                 <td>${product.price}</td>
                 <td>{product.description}</td>
-                <td>
-                  <div className="d-flex align-items-center">
-                    <Button
-                      variant="outline-danger"
-                      onClick={() => updatetags(product.id, 'decrease')}
-                    >
-                      -
-                    </Button>
-                    <span className="mx-2">{product.tags}</span>
-                    <Button
-                      variant="outline-success"
-                      onClick={() => updatetags(product.id, 'increase')}
-                    >
-                      +
-                    </Button>
-                  </div>
-                </td>
               </tr>
             ))
           ) : (
