@@ -18,7 +18,6 @@ const Sidebar = () => {
 
   // Charts Array
   const chartOptions = [
-    { path: '/charts/sales', label: 'Sales Chart' },
     { path: '/ServiceRequestData', label: 'Service Request Data' },
     { path: '/UsersByArea', label: 'Users By Area' },
     { path: '/ActiveUsers', label: 'User Activity' },
