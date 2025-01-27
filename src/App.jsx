@@ -10,6 +10,8 @@ import Products from './pages/Products';
 import UsersByArea from './pages/UsersByArea';
 import ActiveUsers from './pages/ActiveUsers';
 import ServiceRequestData from './pages/ServiceRequestData';
+import Login from './pages/Login';  
+import Signup from './pages/Signup';  
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/main.css';
 
@@ -17,6 +19,8 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/" element={
           <DashboardLayout>
             <Dashboard />

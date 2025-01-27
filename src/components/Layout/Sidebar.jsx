@@ -18,6 +18,7 @@ const Sidebar = () => {
 
   // Charts Array
   const chartOptions = [
+
     { path: '/ServiceRequestData', label: 'Service Request Data' },
     { path: '/UsersByArea', label: 'Users By Area' },
     { path: '/ActiveUsers', label: 'User Activity' },
