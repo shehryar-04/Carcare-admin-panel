@@ -1,4 +1,5 @@
 import React from 'react';
+import { PDFViewer } from "@react-pdf/renderer";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import DashboardLayout from './components/Layout/DashboardLayout';
 import Dashboard from './pages/Dashboard';
@@ -12,6 +13,7 @@ import ActiveUsers from './pages/ActiveUsers';
 import ServiceRequestData from './pages/ServiceRequestData';
 import Login from './pages/Login';  
 import Signup from './pages/Signup';  
+import Report from './pages/Reports';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/main.css';
 
@@ -69,6 +71,13 @@ function App() {
         <Route path="/ServiceRequestData" element={
           <DashboardLayout>
             <ServiceRequestData />
+          </DashboardLayout>
+        } />
+        <Route path="/Reports" element={
+          <DashboardLayout>
+          <PDFViewer width="1000" height="650" className="app" >
+            <Report />
+          </PDFViewer>
           </DashboardLayout>
         } />
       </Routes>

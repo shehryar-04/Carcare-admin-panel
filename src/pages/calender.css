@@ -1,0 +1,180 @@
+/* Base Calendar Styling */
+.react-calendar {
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 8px;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.react-calendar__navigation button {
+  background: none;
+  border: none;
+  padding: 8px;
+  min-width: 44px;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  padding: 0.5em 0;
+  font-size: 0.8em;
+  color: #4b5563;
+}
+
+/* Tile styling */
+.react-calendar__tile {
+  position: relative;
+  padding: 0.5em;
+  height: 3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.react-calendar__tile abbr {
+  text-decoration: none;
+  position: relative;
+  z-index: 1;
+  font-weight: bold;
+}
+.react-calendar__tile {
+  color: black !important; /* Ensure text is always visible */
+  font-weight: bold;
+}
+
+.react-calendar__tile abbr {
+  color: inherit !important;
+}
+
+/* Ensure the circles do not obscure text */
+.react-calendar__tile::after {
+  width: 2em; 
+  height: 2em;
+  opacity: 0.8; /* Make colors slightly transparent */
+}
+
+.react-calendar__tile:hover {
+  background: rgba(0, 0, 0, 0.1) !important; /* Hover effect */
+}
+
+
+/* Circle indicator behind the date number */
+.react-calendar__tile::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1.8em;
+  height: 1.8em;
+  border-radius: 50%;
+  z-index: 0;
+  transition: background 0.3s;
+}
+
+/* Status color classes */
+.pending::after {
+  background: #6b7280 !important; /* Grey */
+}
+
+.userNotAvailable::after {
+  background: #ff0000 !important; /* Dark red */
+}
+
+.vendorNotAvailable::after {
+  background: #925f3d !important; /* Light red */
+}
+
+.completed::after {
+  background: #16a34a !important; /* Green */
+}
+
+/* Ensure date text appears above the circle indicator */
+.pending abbr,
+.userNotAvailable abbr,
+.vendorNotAvailable abbr,
+.completed abbr {
+  color: #ffffff !important;
+}
+
+/* Active/Pressed State */
+.react-calendar__tile:active,
+.react-calendar__tile--active {
+  background: none !important;
+}
+
+/* Disabled tiles */
+.react-calendar__tile:disabled {
+  background: #f3f4f6;
+  color: #d1d5db;
+}
+
+/* Container styling */
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Legend styling (Optional) */
+.legend {
+  width: 100%;
+  max-width: 400px;
+  background: #f9fafb;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 10px;
+  font-family: Arial, sans-serif;
+  font-size: 0.9em;
+}
+
+.legend h3 {
+  margin-top: 0;
+  font-size: 1.1em;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 4px;
+}
+
+.legend ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  margin: 6px 0;
+}
+
+.legend-color {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  border-radius: 50%;
+}
+
+/* Legend color mappings */
+.legend-color.pending {
+  background: #6b7280;
+}
+
+.legend-color.userNotAvailable {
+  background: #991b1b;
+}
+
+.legend-color.vendorNotAvailable {
+  background: #fca5a5;
+}
+
+.legend-color.completed {
+  background: #16a34a;
+}

@@ -14,6 +14,7 @@ const Sidebar = () => {
     { path: '/maps', icon: <FaMap />, label: 'Maps' },
     { path: '/forms', icon: <FaColumns />, label: 'Forms' },
     { path: '/products', icon: <FaCalculator />, label: 'Products' },
+    { path: '/Reports', icon: <FaChartBar />, label: 'reports' },
   ];
 
   // Charts Array

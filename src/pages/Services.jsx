@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Table, Card, Button, Modal, Alert, Badge } from 'react-bootstrap';  
 import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';  
 import { db } from '../config/firebase';  
+import OpenCalendarModalButton from './costom-components/Button'; // Import the new button component  
   
 const Services = () => {  
   const [requests, setRequests] = useState([]);  
@@ -29,7 +30,7 @@ const Services = () => {
       setError('Failed to fetch service requests');  
     }  
   };  
-    
+  
   const fetchVendors = async () => {  
     try {  
       const response = await fetch('https://carcarebaked.azurewebsites.net/api/vendors');  
@@ -48,17 +49,14 @@ const Services = () => {
     try {  
       setError('');  
       setSuccess('');  
-  
-      // Update the service request with the new vendor ID  
       const requestRef = doc(db, 'serviceRequests', requestId);  
       await updateDoc(requestRef, {  
         vendorId,  
         state: 'pending' // Update the status as needed  
       });  
   
-      // Fetch the vendor and user FCM tokens  
       const vendor = vendors.find(v => v.id === vendorId);  
-      const user = requests.find(r => r.id === requestId); // Assuming the user info is in the request  
+      const user = requests.find(r => r.id === requestId);  
   
       if (vendor && user) {  
         await sendNotification(vendor.fcmToken, 'New Service Request Assigned', 'You have been assigned a new service request.');  
@@ -99,23 +97,30 @@ const Services = () => {
   };  
   
   const isRequestActive = (request) => {  
-    // Parse the date and time from the request  
-    const [month, day, year] = request.date.split('/').map(Number);  
-    const [time, modifier] = request.time.split(' '); // e.g., "1:44 PM"  
-    let [hours, minutes] = time.split(':').map(Number);  
-  
-    // Convert hours to 24-hour format if PM  
-    if (modifier === 'PM' && hours < 12) {  
-      hours += 12;  
-    }  
-    // If it's 12 AM, set hours to 0  
-    if (modifier === 'AM' && hours === 12) {  
-      hours = 0;  
+    if (!request.time) {  
+      return false; // or true, depending on your preference  
     }  
   
-    // Create a Date object  
-    const requestDateTime = new Date(year + 2000, month - 1, day, hours, minutes); // Add 2000 to year for full year  
-    return requestDateTime > new Date(); // Check if request date and time is in the future  
+    const now = new Date();  
+    return request.dates.some(dateObj => {  
+      if (!dateObj.date) return false; // Skip if no date  
+      const [month, day, year] = dateObj.date.split('/').map(Number);  
+      const requestDateTime = new Date(year < 100 ? year + 2000 : year, month - 1, day);  
+      return requestDateTime > now; // Check if this date is in the future  
+    });  
+  };  
+  
+  const getFormattedTodayDate = () => {  
+    const today = new Date();  
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based  
+    const day = String(today.getDate()).padStart(2, '0');  
+    const year = today.getFullYear();  
+    return `${month}/${day}/${year}`;  
+  };  
+  
+  const isTodayAvailable = (request) => {  
+    const todayFormatted = getFormattedTodayDate();  
+    return request.dates.some(dateObj => dateObj.date === todayFormatted);  
   };  
   
   return (  
@@ -135,12 +140,13 @@ const Services = () => {
               <th>Price</th>  
               <th>Status</th>  
               <th>Actions</th>  
+              <th>Calendar</th> {/* Added a new column for the calendar */}  
             </tr>  
           </thead>  
           <tbody>  
             {requests.filter(isRequestActive).map((request) => (  
               <tr key={request.id}>  
-                <td>{request.date}</td>  
+                <td>{getFormattedTodayDate()}</td> {/* Display today's date */}  
                 <td>{request.time}</td>  
                 <td>{request.serviceName}</td>  
                 <td>{request.vehicleNumber}</td>  
@@ -160,6 +166,11 @@ const Services = () => {
                       Reassign  
                     </Button>  
                   )}  
+                </td>  
+                <td>  
+                  {/* Use the OpenCalendarModalButton component */}  
+                  <OpenCalendarModalButton requestId={request.id} />  
+                  {console.log(request.id)}
                 </td>  
               </tr>  
             ))}  

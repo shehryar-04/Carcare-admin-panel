@@ -1,0 +1,150 @@
+1. Dashboard (Overview)
+
+Total Customers (Active & Inactive)/
+
+Total Vendors/Workers (Approved, Pending, Rejected)/
+
+Total Bookings (Completed, Pending, Canceled)/
+
+Revenue Overview (Daily, Weekly, Monthly)    *
+Revenue from store and service seperate.   *
+Active Services & Categories    *
+Notifications & Alerts
+Add service manually
+Store management inventory managment, products statistics.*
+2. User Management     *
+
+Customers
+
+View customer profiles
+
+Manage customer accounts (Activate, Deactivate, Ban)
+
+Booking history & payment records
+
+Customer reviews & feedback
+
+
+Vendors/Workers    *
+
+Approve, reject, or suspend vendor/worker accounts
+
+Manage vendor services & assigned areas
+
+Performance tracking (Ratings, Reviews, Completed Jobs)
+
+Payment settlements & earnings overview**
+
+3. Service Management
+
+Add, edit, or delete services   *
+
+Manage pricing (Fixed, Custom, Area-based)
+
+Assign services to vendors/workers
+
+Service availability status
+
+4. Booking & Order Management
+
+View all bookings (Pending, Ongoing, Completed, Canceled)
+
+Assign or reassign workers (if required)
+
+Booking history for analysis
+
+
+5. Payments & Financials
+
+Track payments (Completed, Pending, Failed)
+
+Vendor payout management
+
+Commission & revenue tracking
+
+Generate invoices & reports   **
+
+6. Vendor/Worker Commission & Earnings
+
+Define commission percentage for vendors/workers
+
+Automated earnings calculation
+
+Manual payout requests & approval**
+
+7. Location & Service Areas
+
+Define serviceable areas (City, Zones, Radius-based)
+
+Assign vendors/workers to specific locations
+
+Track vendor availability in real-time
+
+
+
+8. Ratings & Reviews Management
+
+Monitor customer feedback
+
+Approve or reject reviews
+
+Take action on poor-performing vendors/workers
+
+9. Promotions & Discounts
+
+Create promo codes & discounts
+
+Set eligibility criteria (New users, Specific services, etc.)
+
+Track coupon usage & performance
+
+
+
+10. Support & Dispute Resolution
+
+Manage customer/vendor complaints
+
+View & respond to tickets
+
+Take actions (Refund, Reassign, Ban)
+
+11. Notification System**
+
+Push notifications to customers & vendors
+
+SMS & email alerts for bookings, payments, etc.
+
+Admin alerts for important updates
+
+
+12. Reports & Analytics**
+
+Customer & vendor activity reports
+
+Earnings & revenue reports
+
+Service demand trends
+
+Growth & performance analysis area and service vise.
+
+
+13. Roles & Permissions Management
+
+Define admin roles (Super Admin, Support, Finance, etc.)
+
+Set permissions for different access levels
+
+14. Chatbot & Customer Support
+
+Integrate chatbot for automated responses
+
+Live chat support system
+
+
+
+15. System Settings & Configurations
+
+General settings (App name, Logo, Contact details)
+Booking rules & cancellation policies
+Payment gateway configurations
+Data backup & security settings
