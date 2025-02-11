@@ -1,9 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../config/firebase';
-import { FileDown, DollarSign, Search } from 'lucide-react';
-import { format, getYear, getMonth } from 'date-fns';
-import { PDFDownloadLink, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import React, { useEffect, useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../config/firebase";
+import { DollarSign, FileDown, Search } from "lucide-react";
+import { format, getYear, getMonth } from "date-fns";
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+  PDFViewer,
+  PDFDownloadLink,
+} from "@react-pdf/renderer";
 
 // Create styles for PDF
 const styles = StyleSheet.create({
@@ -26,43 +34,49 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   summaryRow: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: 5,
   },
   summaryLabel: {
     width: 120,
   },
   tableHeader: {
-    flexDirection: 'row',
+    flexDirection: "row",
     borderBottomWidth: 1,
-    borderBottomColor: '#000',
+    borderBottomColor: "#000",
     paddingBottom: 5,
     marginBottom: 10,
-    backgroundColor: '#f3f4f6',
+    backgroundColor: "#f3f4f6",
     padding: 8,
   },
   tableRow: {
-    flexDirection: 'row',
+    flexDirection: "row",
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: "#eee",
     paddingVertical: 8,
   },
-  col1: { width: '15%' },
-  col2: { width: '20%' },
-  col3: { width: '15%' },
-  col4: { width: '15%' },
-  col5: { width: '12%', textAlign: 'right' },
-  col6: { width: '12%', textAlign: 'right' },
-  col7: { width: '11%', textAlign: 'right' },
+  col1: { width: "15%" },
+  col2: { width: "20%" },
+  col3: { width: "15%" },
+  col4: { width: "15%" },
+  col5: { width: "12%", textAlign: "right" },
+  col6: { width: "12%", textAlign: "right" },
+  col7: { width: "11%", textAlign: "right" },
   footer: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 30,
     left: 30,
     right: 30,
     fontSize: 8,
-    textAlign: 'center',
+    textAlign: "center",
   },
 });
+
+const calculateEarnings = (price, vendorCommission = 70) => {
+  const vendorEarning = (price * vendorCommission) / 100;
+  const adminEarning = price - vendorEarning;
+  return { vendorEarning, adminEarning };
+};
 
 // PDF Document Component
 const ServiceStatementPDF = ({ data, year, month }) => (
@@ -70,7 +84,7 @@ const ServiceStatementPDF = ({ data, year, month }) => (
     <Page size="A4" style={styles.page}>
       <Text style={styles.title}>CarCare Service Statement</Text>
       <Text style={styles.subtitle}>
-        Statement Period: {format(new Date(year, month, 1), 'MMMM yyyy')}
+        Statement Period: {format(new Date(year, month, 1), "MMMM yyyy")}
       </Text>
 
       <View style={styles.summarySection}>
@@ -100,11 +114,13 @@ const ServiceStatementPDF = ({ data, year, month }) => (
       </View>
 
       {data.requests.map((request) => {
-        const { vendorEarning, adminEarning } = calculateEarnings(request.price);
+        const { vendorEarning, adminEarning } = calculateEarnings(
+          request.price
+        );
         return (
           <View key={request.id} style={styles.tableRow}>
             <Text style={styles.col1}>
-              {format(request.createdAt.toDate(), 'dd/MM/yy')}
+              {format(request.createdAt.toDate(), "dd/MM/yy")}
             </Text>
             <Text style={styles.col2}>{request.serviceName}</Text>
             <Text style={styles.col3}>{request.vehicleNumber}</Text>
@@ -123,16 +139,15 @@ const ServiceStatementPDF = ({ data, year, month }) => (
 
 const ServiceReports = () => {
   const [serviceRequests, setServiceRequests] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [earningsData, setEarningsData] = useState({});
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchServiceRequests = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, 'serviceRequests'));
+        const querySnapshot = await getDocs(collection(db, "serviceRequests"));
         const requests = [];
         querySnapshot.forEach((doc) => {
           requests.push({ ...doc.data(), id: doc.id });
@@ -140,20 +155,12 @@ const ServiceReports = () => {
         setServiceRequests(requests);
         organizeEarnings(requests);
       } catch (error) {
-        console.error('Error fetching service requests:', error);
-      } finally {
-        setLoading(false);
+        console.error("Error fetching service requests:", error);
       }
     };
 
     fetchServiceRequests();
   }, []);
-
-  const calculateEarnings = (price, vendorCommission = 70) => {
-    const vendorEarning = (price * vendorCommission) / 100;
-    const adminEarning = price - vendorEarning;
-    return { vendorEarning, adminEarning };
-  };
 
   const organizeEarnings = (requests) => {
     const earnings = {};
@@ -185,23 +192,29 @@ const ServiceReports = () => {
     setEarningsData(earnings);
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" />
-      </div>
-    );
-  }
-
-  const years = Object.keys(earningsData).map(Number).sort((a, b) => b - a);
+  const years = Object.keys(earningsData)
+    .map(Number)
+    .sort((a, b) => b - a);
   const monthsData = earningsData[selectedYear]?.[selectedMonth];
   const months = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
 
   const generateUniqueKey = (request) => {
-    return `${request.serviceId}-${request.vehicleNumber}-${request.createdAt.toDate().getTime()}`;
+    return `${request.serviceId}-${request.vehicleNumber}-${request.createdAt
+      .toDate()
+      .getTime()}`;
   };
 
   return (
@@ -211,7 +224,9 @@ const ServiceReports = () => {
           {/* Header */}
           <div className="bg-blue-600 px-6 py-4">
             <div className="flex justify-between items-center">
-              <h1 className="text-2xl font-bold text-white">Service Statement</h1>
+              <h1 className="text-2xl font-bold text-white">
+                Service Statement
+              </h1>
               <div className="flex items-center space-x-4">
                 <select
                   value={selectedMonth}
@@ -219,7 +234,9 @@ const ServiceReports = () => {
                   className="rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-600 sm:text-sm sm:leading-6"
                 >
                   {months.map((month, index) => (
-                    <option key={month} value={index}>{month}</option>
+                    <option key={month} value={index}>
+                      {month}
+                    </option>
                   ))}
                 </select>
                 <select
@@ -228,28 +245,19 @@ const ServiceReports = () => {
                   className="rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-600 sm:text-sm sm:leading-6"
                 >
                   {years.map((year) => (
-                    <option key={year} value={year}>{year}</option>
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
                   ))}
                 </select>
                 {monthsData && (
-                  <PDFDownloadLink
-                    document={
-                      <ServiceStatementPDF
-                        data={monthsData}
-                        year={selectedYear}
-                        month={selectedMonth}
-                      />
-                    }
-                    fileName={`service-statement-${selectedYear}-${selectedMonth + 1}.pdf`}
-                    className="flex items-center gap-2 px-4 py-2 bg-white text-blue-600 rounded-md hover:bg-blue-50 transition-colors"
-                  >
-                    {({ loading }) => (
-                      <>
-                        <FileDown className="w-4 h-4" />
-                        <span>{loading ? 'Loading...' : 'Download Statement'}</span>
-                      </>
-                    )}
-                  </PDFDownloadLink>
+                  <PDFViewer width={"100%"} height={"650"}>
+                    <ServiceStatementPDF
+                      data={monthsData}
+                      year={selectedYear}
+                      month={selectedMonth}
+                    />
+                  </PDFViewer>
                 )}
               </div>
             </div>
@@ -261,7 +269,9 @@ const ServiceReports = () => {
               <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-500">Total Revenue</p>
+                    <p className="text-sm font-medium text-gray-500">
+                      Total Revenue
+                    </p>
                     <p className="text-2xl font-semibold text-gray-900">
                       ${monthsData.totalAmount.toFixed(2)}
                     </p>
@@ -272,7 +282,9 @@ const ServiceReports = () => {
               <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-500">Vendor Earnings</p>
+                    <p className="text-sm font-medium text-gray-500">
+                      Vendor Earnings
+                    </p>
                     <p className="text-2xl font-semibold text-gray-900">
                       ${monthsData.vendorEarnings.toFixed(2)}
                     </p>
@@ -283,7 +295,9 @@ const ServiceReports = () => {
               <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-500">CarCare Earnings</p>
+                    <p className="text-sm font-medium text-gray-500">
+                      CarCare Earnings
+                    </p>
                     <p className="text-2xl font-semibold text-gray-900">
                       ${monthsData.adminEarnings.toFixed(2)}
                     </p>
@@ -316,43 +330,76 @@ const ServiceReports = () => {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
                       Date
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
                       Service
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
                       Vehicle
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
                       Area
                     </th>
-                    <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
                       Total Amount
                     </th>
-                    <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
                       Vendor Earnings
                     </th>
-                    <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
                       CarCare Earnings
                     </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {monthsData.requests
-                    .filter(request => 
-                      searchTerm === '' ||
-                      request.serviceName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                      request.vehicleNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                      request.area.toLowerCase().includes(searchTerm.toLowerCase())
+                    .filter(
+                      (request) =>
+                        searchTerm === "" ||
+                        request.serviceName
+                          .toLowerCase()
+                          .includes(searchTerm.toLowerCase()) ||
+                        request.vehicleNumber
+                          .toLowerCase()
+                          .includes(searchTerm.toLowerCase()) ||
+                        request.area
+                          .toLowerCase()
+                          .includes(searchTerm.toLowerCase())
                     )
                     .map((request) => {
-                      const { vendorEarning, adminEarning } = calculateEarnings(request.price);
+                      const { vendorEarning, adminEarning } = calculateEarnings(
+                        request.price
+                      );
                       return (
-                        <tr key={generateUniqueKey(request)} className="hover:bg-gray-50">
+                        <tr
+                          key={generateUniqueKey(request)}
+                          className="hover:bg-gray-50"
+                        >
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {format(request.createdAt.toDate(), 'dd/MM/yyyy')}
+                            {format(request.createdAt.toDate(), "dd/MM/yyyy")}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                             {request.serviceName}
