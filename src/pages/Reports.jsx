@@ -12,7 +12,6 @@ import {
   PDFViewer,
   PDFDownloadLink,
 } from "@react-pdf/renderer";
-
 // Create styles for PDF
 const styles = StyleSheet.create({
   page: {
