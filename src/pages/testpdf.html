@@ -1,0 +1,18 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+    <title>Test jsPDF</title>  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>  
+    <script>  
+        document.addEventListener('DOMContentLoaded', function() {  
+            const { jsPDF } = window.jspdf;  
+            const doc = new jsPDF();  
+            doc.text("Hello world!", 10, 10);  
+            doc.save("a4.pdf");  
+        });  
+    </script>  
+</head>  
+<body>  
+    <h1>jsPDF Test</h1>  
+</body>  
+</html>  
