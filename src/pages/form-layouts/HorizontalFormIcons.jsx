@@ -35,7 +35,7 @@ const HorizontalFormIcons = () => {
   
             switch (formType) {                                  
                 case 'Create-area':                                          
-                    endpoint = 'https://carcarebaked.azurewebsites.net/api/areas';                                          
+                    endpoint = 'https://backend.neurodude.co/api/areas';                                          
                     data = JSON.stringify({ name: formData.name });                                          
                     break;                                  
                 case 'banners':                      
@@ -43,7 +43,7 @@ const HorizontalFormIcons = () => {
                     const formDataBanner = new FormData();                      
                     formDataBanner.append('image', formData.image); // Append the image file                                      
   
-                    const uploadResponse = await fetch('https://carcarebaked.azurewebsites.net/api/uploadImage', {                          
+                    const uploadResponse = await fetch('https://backend.neurodude.co/api/uploadImage', {                          
                         method: 'POST',                          
                         body: formDataBanner,                      
                     });                                      
@@ -56,13 +56,13 @@ const HorizontalFormIcons = () => {
                     const imagePath = uploadResult.image; // Get the 'image' field from the response                                      
   
                     // Step 2: Prepare the banner data                      
-                    endpoint = 'https://carcarebaked.azurewebsites.net/api/createBanner';                      
+                    endpoint = 'https://backend.neurodude.co/api/createBanner';                      
                     data = JSON.stringify({                          
-                        image: `https://carcarebaked.azurewebsites.net/api/image/${imagePath}`,                      
+                        image: `https://backend.neurodude.co/api/image/${imagePath}`,                      
                     });                      
                     break;                   
                 case 'blogs':                                          
-                    endpoint = 'https://carcarebaked.azurewebsites.net/api/createBlog';                           
+                    endpoint = 'https://backend.neurodude.co/api/createBlog';                           
                     data = JSON.stringify({                                                  
                         title: formData.title,                                                  
                         author: formData.author,                                                  
@@ -74,7 +74,7 @@ const HorizontalFormIcons = () => {
                     const formDataCategory = new FormData();  
                     formDataCategory.append('image', formData.image); // Append the image file  
   
-                    const uploadResponseCategory = await fetch('https://carcarebaked.azurewebsites.net/api/uploadImage', {  
+                    const uploadResponseCategory = await fetch('https://backend.neurodude.co/api/uploadImage', {  
                         method: 'POST',  
                         body: formDataCategory,  
                     });  
@@ -87,10 +87,10 @@ const HorizontalFormIcons = () => {
                     const imagePathCategory = uploadResultCategory.image; // Get the 'image' field from the response  
   
                     // Step 2: Prepare the category data  
-                    endpoint = 'https://carcarebaked.azurewebsites.net/api/createCategory';  
+                    endpoint = 'https://backend.neurodude.co/api/createCategory';  
                     data = JSON.stringify({  
                         title: formData.name, // Use the name field for the title  
-                        image: `https://carcarebaked.azurewebsites.net/api/image/${imagePathCategory}`,  
+                        image: `https://backend.neurodude.co/api/image/${imagePathCategory}`,  
                     });  
                     break;  
   
@@ -231,7 +231,7 @@ const HorizontalFormIcons = () => {
     return (                  
         <Card>                        
             <CardHeader>                              
-                <CardTitle tag='h4'>Horizontal Form with Icons</CardTitle>                        
+                <CardTitle tag='h4'>Create Area, Banner, Blog, or Category</CardTitle>                        
             </CardHeader>                        
             <CardBody>                              
                 {error && <p style={{ color: 'red' }}>Error: {error}</p>}                              

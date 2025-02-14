@@ -21,9 +21,9 @@ const App = () => {
     useEffect(() => {    
         const fetchData = async () => {    
             try {    
-                const usersResponse = await fetch("https://carcarebaked.azurewebsites.net/api/users");    
+                const usersResponse = await fetch("https://backend.neurodude.co/api/users");    
                 const usersData = await usersResponse.json();    
-                const servicesResponse = await fetch("https://carcarebaked.azurewebsites.net/api/service-request");    
+                const servicesResponse = await fetch("https://backend.neurodude.co/api/service-request");    
                 const servicesData = await servicesResponse.json();    
                 setUsers(usersData || []);    
                 setServices(servicesData || []);    
@@ -94,7 +94,7 @@ const App = () => {
     }, [users, services]);    
   
     const sendNotification = async () => {    
-        const response = await fetch("https://carcarebaked.azurewebsites.net/api/send-notification-token", {    
+        const response = await fetch("https://backend.neurodude.co/api/send-notification-token", {    
             method: "POST",    
             headers: {    
                 "Content-Type": "application/json",    

@@ -20,8 +20,8 @@ const ServiceRequestsChart = () => {
     const fetchData = async () => {
       try {
         // Fetch service requests and users data
-        const serviceRequestsResponse = await axios.get('https://carcarebaked.azurewebsites.net/api/service-request');
-        const usersResponse = await axios.get('https://carcarebaked.azurewebsites.net/api/users');
+        const serviceRequestsResponse = await axios.get('https://backend.neurodude.co/api/service-request');
+        const usersResponse = await axios.get('https://backend.neurodude.co/api/users');
         
         setServiceRequests(serviceRequestsResponse.data);
         setUsers(usersResponse.data);

@@ -17,7 +17,7 @@ const NotificationForm = () => {
     const handleSubmit = async (e) => {  
         e.preventDefault(); // Prevent default form submission  
   
-        const endpoint = 'https://carcarebaked.azurewebsites.net/api/send-notification-topic';  
+        const endpoint = 'https://backend.neurodude.co/api/send-notification-topic';  
         const topicName = 'all-devices'; // Hardcoded topic name  
         const data = JSON.stringify({  
             topic: topicName,  

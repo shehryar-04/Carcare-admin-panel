@@ -8,23 +8,22 @@ const ProductForm = () => {
         image: '',  
         price: '',  
         category: '',  
-        tags: '' // Hardcoded array of tags  
+        quantity: '' 
     });  
-    const [error, setError] = useState(null); // State for error messages  
-    const [successMessage, setSuccessMessage] = useState(''); // State for success messages  
-    const [imageFile, setImageFile] = useState(null); // State to hold the image file  
-    const [categories, setCategories] = useState([]); // State for categories  
+    const [error, setError] = useState(null);  
+    const [successMessage, setSuccessMessage] = useState('');  
+    const [imageFile, setImageFile] = useState(null);  
+    const [categories, setCategories] = useState([]);  
   
     useEffect(() => {  
-        // Fetch categories from the API  
         const fetchCategories = async () => {  
             try {  
-                const response = await fetch('https://carcarebaked.azurewebsites.net/api/categories');  
+                const response = await fetch('https://backend.neurodude.co/api/categories');  
                 if (!response.ok) {  
                     throw new Error('Failed to fetch categories');  
                 }  
                 const data = await response.json();  
-                setCategories(data); // Assuming the API returns an array of categories  
+                setCategories(data);  
             } catch (error) {  
                 console.error('Error fetching categories:', error);  
                 setError(error.message);  
@@ -32,7 +31,7 @@ const ProductForm = () => {
         };  
   
         fetchCategories();  
-    }, []); // Empty dependency array to run once when the component mounts  
+    }, []);  
   
     const handleChange = (e) => {  
         const { name, value } = e.target;  
@@ -46,7 +45,7 @@ const ProductForm = () => {
             formData.append('image', file);
     
             try {
-                const response = await fetch('https://carcarebaked.azurewebsites.net/api/uploadImage', {
+                const response = await fetch('https://backend.neurodude.co/api/uploadImage', {
                     method: 'POST',
                     body: formData,
                 });
@@ -57,16 +56,15 @@ const ProductForm = () => {
                 }
     
                 const result = await response.json(); 
-                console.log('Image Upload Result:', result); // Log the result from the server
-                const imageUrl = `https://carcarebaked.azurewebsites.net/api/images/${result.image}`; // Adjust based on your API response structure
+                console.log('Image Upload Result:', result);
+                const imageUrl = `https://backend.neurodude.co/api/images/${result.image}`;
     
-                // Update formData with the image URL
                 setFormData((prevData) => ({
                     ...prevData,
-                    image: imageUrl,  // Set the image URL to formData
+                    image: imageUrl,
                 }));
     
-                setImageFile(file.name); // Optionally store the image file name for display
+                setImageFile(file.name);
             } catch (error) {
                 console.error('Image Upload Error:', error);
                 setError(error.message);
@@ -76,45 +74,43 @@ const ProductForm = () => {
     
   
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Prevent default form submission
-        const data = JSON.stringify(formData); // Convert formData to JSON
+        e.preventDefault();
+        const data = JSON.stringify(formData);
     
-        // Ensure the image URL is correctly set
         if (!formData.image) {
             setError('Image is required!');
             return;
         }
     
         try {
-            setError(null); // Clear previous errors
-            setSuccessMessage(''); // Clear previous success messages
+            setError(null);
+            setSuccessMessage('');
     
-            // Make the API call
-            const response = await fetch('https://carcarebaked.azurewebsites.net/api/createproduct', {
+            const response = await fetch('https://backend.neurodude.co/api/createproduct', {
                 method: 'POST',
                 body: data,
-                headers: { 'Content-Type': 'application/json' }, // Ensure Content-Type is set to application/json
+                headers: { 'Content-Type': 'application/json' },
             });
     
             if (!response.ok) {
-                const errorText = await response.text(); // Extract error message from the server
+                const errorText = await response.text();
                 throw new Error(`Error: ${response.status} - ${errorText}`);
             }
     
-            const result = await response.json(); // Get the response data
-            console.log('Success:', result); // Log success response
-            setSuccessMessage('Product created successfully!'); // Success message
+            const result = await response.json();
+            console.log('Success:', result);
+            setSuccessMessage('Product created successfully!');
             setFormData({
                 title: '',
                 description: '',
                 image: '',
                 price: '',
                 category: '',
-                tags: ['tag1', 'tag2', 'tag3'],
-            }); // Reset form fields after submission
+                quantity: ''
+            });
         } catch (error) {
             console.error('Error:', error);
-            setError(error.message); // Display the error to the user
+            setError(error.message);
         }
     };
      
@@ -131,35 +127,26 @@ const ProductForm = () => {
                     <Row className='mb-1'>  
                         <Label sm='3' for='title'>Title</Label>  
                         <Col sm='9'>  
-                            <InputGroup className='input-group-merge'>  
-                                <InputGroupText>Title</InputGroupText>  
-                                <Input type='text' name='title' id='title' placeholder='Enter product title' value={formData.title} onChange={handleChange} required />  
-                            </InputGroup>  
+                            <Input type='text' name='title' id='title' placeholder='Enter product title' value={formData.title} onChange={handleChange} required />  
                         </Col>  
                     </Row>  
                     <Row className='mb-1'>  
                         <Label sm='3' for='description'>Description</Label>  
                         <Col sm='9'>  
-                            <InputGroup className='input-group-merge'>  
-                                <InputGroupText>Description</InputGroupText>  
-                                <Input type='textarea' name='description' id='description' placeholder='Enter product description' value={formData.description} onChange={handleChange} required />  
-                            </InputGroup>  
+                            <Input type='textarea' name='description' id='description' placeholder='Enter product description' value={formData.description} onChange={handleChange} required />  
                         </Col>  
                     </Row>  
                     <Row className='mb-1'>  
                         <Label sm='3' for='image'>Image Upload</Label>  
                         <Col sm='9'>  
                             <Input type='file' accept='image/*' onChange={handleImageUpload} required />  
-                            {imageFile && <p>Uploaded: {imageFile}</p>} {/* Show the uploaded file name */}  
+                            {imageFile && <p>Uploaded: {imageFile}</p>}  
                         </Col>  
                     </Row>  
                     <Row className='mb-1'>  
                         <Label sm='3' for='price'>Price</Label>  
                         <Col sm='9'>  
-                            <InputGroup className='input-group-merge'>  
-                                <InputGroupText>Price</InputGroupText>  
-                                <Input type='number' name='price' id='price' placeholder='Enter product price' value={formData.price} onChange={handleChange} required />  
-                            </InputGroup>  
+                            <Input type='number' name='price' id='price' placeholder='Enter product price' value={formData.price} onChange={handleChange} required />  
                         </Col>  
                     </Row>  
                     <Row className='mb-1'>  
@@ -168,15 +155,21 @@ const ProductForm = () => {
                             <Input type='select' name='category' id='category' value={formData.category} onChange={handleChange} required>  
                                 <option value=''>Select a category</option>  
                                 {categories.map((category) => (  
-                                    <option key={category.id} value={category.title}>{category.title}</option> // Adjust according to your category structure  
+                                    <option key={category.id} value={category.title}>{category.title}</option>  
                                 ))}  
                             </Input>  
+                        </Col>  
+                    </Row>  
+                    <Row className='mb-1'>  
+                        <Label sm='3' for='quantity'>Quantity</Label>  
+                        <Col sm='9'>  
+                            <Input type='number' name='quantity' id='quantity' placeholder='Enter product quantity' value={formData.quantity} onChange={handleChange} required />  
                         </Col>  
                     </Row>  
                     <Row>  
                         <Col className='d-flex' md={{ size: 9, offset: 3 }}>  
                             <Button className='me-1' color='primary' type='submit'>Create Product</Button>  
-                            <Button outline color='secondary' type='reset' onClick={() => setFormData({ title: '', description: '', image: '', price: '', category: '', tags: ['tag1', 'tag2', 'tag3'] })}>Reset</Button>  
+                            <Button outline color='secondary' type='reset' onClick={() => setFormData({ title: '', description: '', image: '', price: '', category: '', quantity: '' })}>Reset</Button>  
                         </Col>  
                     </Row>  
                 </Form>  
@@ -185,4 +178,4 @@ const ProductForm = () => {
     );  
 };  
   
-export default ProductForm;  
+export default ProductForm;

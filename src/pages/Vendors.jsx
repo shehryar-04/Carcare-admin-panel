@@ -80,7 +80,7 @@ const Vendors = () => {
   
   const sendNotification = async (title, body, fcmToken) => {  
     try {  
-      const response = await fetch('https://carcarebaked.azurewebsites.net/api/send-notification-token', {  
+      const response = await fetch('https://backend.neurodude.co/api/send-notification-token', {  
         method: 'POST',  
         headers: { 'Content-Type': 'application/json' },  
         body: JSON.stringify({ title, body, recipients: fcmToken }),  
@@ -200,13 +200,13 @@ const Vendors = () => {
                   {vendor.CNIC}  
                   <br />  
                   {vendor.CNIC_back && (  
-                    <a href={`https://carcarebaked.azurewebsites.net/api/image/${vendor.CNIC_back}`} target="_blank" rel="noopener noreferrer">  
+                    <a href={`https://backend.neurodude.co/api/image/${vendor.CNIC_back}`} target="_blank" rel="noopener noreferrer">  
                       CNIC Back  
                     </a>  
                   )}  
                   <br />  
                   {vendor.CNIC_front && (  
-                    <a href={`https://carcarebaked.azurewebsites.net/api/image/${vendor.CNIC_front}`} target="_blank" rel="noopener noreferrer">  
+                    <a href={`https://backend.neurodude.co/api/image/${vendor.CNIC_front}`} target="_blank" rel="noopener noreferrer">  
                       CNIC Front  
                     </a>  
                   )}  

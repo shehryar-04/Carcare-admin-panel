@@ -66,3 +66,19 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+@media screen and (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+}
+@media screen and (max-width: 576px) {
+  .sidebar {
+    display: none;
+  }
+}
+@media screen and (max-width: 480px) {
+  .sidebar {
+    display: block;
+  }
+}
+

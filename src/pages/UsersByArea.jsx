@@ -24,10 +24,10 @@ const App = () => {
     const fetchData = async () => {  
       try {  
         // Fetch users and vendors data  
-        const usersResponse = await fetch('https://carcarebaked.azurewebsites.net/api/users');  
+        const usersResponse = await fetch('https://backend.neurodude.co/api/users');  
         const usersData = await usersResponse.json();  
   
-        const vendorsResponse = await fetch('https://carcarebaked.azurewebsites.net/api/vendors');  
+        const vendorsResponse = await fetch('https://backend.neurodude.co/api/vendors');  
         const vendorsData = await vendorsResponse.json();  
   
         // Group users and vendors by area  

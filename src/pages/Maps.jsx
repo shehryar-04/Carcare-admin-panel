@@ -17,7 +17,7 @@ const Transactions = () => {
     const fetchData = async () => {  
       try {  
         // Fetch area names  
-        const areasResponse = await fetch('https://carcarebaked.azurewebsites.net/api/areas');  
+        const areasResponse = await fetch('https://backend.neurodude.co/api/areas');  
         const areasData = await areasResponse.json();  
         const names = areasData.map(area => area.name);  
         setAreaNames(names);  

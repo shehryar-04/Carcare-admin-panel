@@ -10,11 +10,13 @@ const Sidebar = () => {
   const menuItems = [
     { path: '/dashboard', icon: <FaChartBar />, label: 'Dashboard' },
     { path: '/vendors', icon: <FaUsers />, label: 'Vendors' },
-    { path: '/services', icon: <FaCar />, label: 'Services' },
-    { path: '/maps', icon: <FaMap />, label: 'Maps' },
+    { path: '/serviceRequests', icon: <FaCar />, label: 'Service Request' },
+    { path: '/maps', icon: <FaMap />, label: 'VendorMap' },
     { path: '/forms', icon: <FaColumns />, label: 'Forms' },
     { path: '/products', icon: <FaCalculator />, label: 'Products' },
     { path: '/Reports', icon: <FaChartBar />, label: 'reports' },
+    { path: '/Admins', icon: <FaChartBar />, label: 'Admins' },
+    { path: '/Service', icon: <FaChartBar />, label: 'Service Data' },
   ];
 
   // Charts Array

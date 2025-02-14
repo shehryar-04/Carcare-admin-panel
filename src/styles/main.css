@@ -22,6 +22,12 @@
   background-color: #f8f9fa;
   padding: 20px;
 }
+.sidebar-toggle {
+  display: none;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
 
 .sidebar-link {
   color: #fff !important;
@@ -110,6 +116,10 @@
   .table-responsive {
     font-size: 14px;
   }
+  .sidebar-toggle {
+    display: block;
+    margin-right: 1rem;
+  }
 }
 
 @media (max-width: 576px) {
@@ -119,5 +129,11 @@
   
   h2 {
     font-size: 1.5rem;
+  }
+  .sidebar {
+    width: 50px;
+  }
+  .main-content {
+    width: 100%;
   }
 }

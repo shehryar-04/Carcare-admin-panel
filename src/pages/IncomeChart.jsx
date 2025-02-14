@@ -32,7 +32,7 @@ const IncomeChart = ({ labelColor, gridLineColor }) => {
   useEffect(() => {  
     const fetchServiceRequests = async () => {  
       try {  
-        const response = await fetch('https://carcarebaked.azurewebsites.net/api/service-request');  
+        const response = await fetch('https://backend.neurodude.co/api/service-request');  
         const data = await response.json();  
         setServiceRequestsData(data);  
       } catch (error) {  
@@ -47,7 +47,7 @@ const IncomeChart = ({ labelColor, gridLineColor }) => {
     const monthData = {};  
   
     serviceRequestsData.forEach(request => {  
-      if (request.state === 'cancelled' && request.price && request.createdAt) {  
+      if (request.state === 'completed' && request.price && request.createdAt) {  
         const price = parseFloat(request.price);  
         const createdAtDate = new Date(request.createdAt._seconds * 1000); // Convert seconds to milliseconds  
   
