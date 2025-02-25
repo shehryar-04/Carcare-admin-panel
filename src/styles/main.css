@@ -43,7 +43,7 @@
 /* Header */
 .header {
   background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   position: sticky;
   top: 0;
@@ -54,7 +54,7 @@
 .dashboard-card {
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
   height: 100%;
   margin-bottom: 1rem;
@@ -64,7 +64,7 @@
 .table-responsive {
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   margin-bottom: 1rem;
   overflow-x: auto;
@@ -74,14 +74,14 @@
 .form-container {
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 2rem;
 }
 
 /* Map Styles */
 .leaflet-container {
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .leaflet-popup-content-wrapper {
@@ -95,24 +95,24 @@
 /* Responsive */
 @media (max-width: 768px) {
   .sidebar {
-    transform: translateX(-100%);
+    /* transform: translateX(-100%); */
     position: fixed;
   }
-  
+
   .sidebar.show {
     transform: translateX(0);
   }
-  
+
   .main-content {
     margin-left: 0;
     width: 100%;
     padding: 10px;
   }
-  
+
   .dashboard-card {
     margin-bottom: 15px;
   }
-  
+
   .table-responsive {
     font-size: 14px;
   }
@@ -126,12 +126,12 @@
   .header {
     padding: 0.5rem;
   }
-  
+
   h2 {
     font-size: 1.5rem;
   }
   .sidebar {
-    width: 50px;
+    width: 250px;
   }
   .main-content {
     width: 100%;
