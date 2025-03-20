@@ -1,48 +1,56 @@
 // ** React Imports
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 
 // ** Reactstrap Imports
-import { Row, Col } from 'reactstrap'
-
-// ** Custom Components
-// import Breadcrumbs from '@components/breadcrumbs'
+import { Row, Col, Card, CardBody, Container, Button } from 'reactstrap'
 
 // ** Demo Components
-// import VerticalForm from './VerticalForm'
 import HorizontalForm from './HorizontalForm'
-// import VerticalFormIcons from './VerticalFormIcons'
-// import MultipleColumnForm from './MultipleColumnForm'
 import HorizontalFormIcons from './HorizontalFormIcons'
 import NotificationForm from './NotificationForm'
 import CreateProductForm from './CreateProductForm'
+import CreateFaq from './CreateFaq'
 
 const FormLayouts = () => {
+  const [selectedForm, setSelectedForm] = useState('')
+
+  const renderForm = () => {
+    switch (selectedForm) {
+      case 'horizontal':
+        return <HorizontalForm />
+      case 'horizontalIcons':
+        return <HorizontalFormIcons />
+      case 'notification':
+        return <NotificationForm />
+      case 'product':
+        return <CreateProductForm />
+      case 'faq':
+        return <CreateFaq />
+      default:
+        return <p className='text-center mt-3'>Please select a form</p>
+    }
+  }
+
   return (
     <Fragment>
-      {/* <Breadcrumbs title='Form Layouts' data={[{ title: 'Form' }, { title: 'Form Layouts' }]} /> */}
-      <Row>
-        <Col md='6' sm='12'>
-          <HorizontalForm />
-        </Col>
-        <Col md='6' sm='12'>
-          <HorizontalFormIcons />
-        </Col>
-        {/* <Col md='6' sm='12'>
-          <VerticalForm />
-        </Col> */}
-        {/* <Col md='6' sm='12'>
-          <VerticalFormIcons />
-        </Col>
-        <Col sm='12'>
-          <MultipleColumnForm />
-        </Col> */}
-        <Col sm='12'>
-          <NotificationForm />
-        </Col>
-        <Col sm='12'>
-          <CreateProductForm />
-        </Col>
-      </Row>
+      <Container className='mt-3'>
+        <Row className='mb-3'>
+          <Col className='d-flex justify-content-center'>
+            <Button color='primary' className='me-2' onClick={() => setSelectedForm('horizontal')}>Service</Button>
+            <Button color='primary' className='me-2' onClick={() => setSelectedForm('horizontalIcons')}>Area, Banner, Blog, or Category</Button>
+            <Button color='primary' className='me-2' onClick={() => setSelectedForm('notification')}>Notification </Button>
+            <Button color='primary' className='me-2' onClick={() => setSelectedForm('product')}>Product </Button>
+            <Button color='primary' onClick={() => setSelectedForm('faq')}>FAQ</Button>
+          </Col>
+        </Row>
+        <Row>
+          <Col md='12'>
+            <Card>
+              <CardBody>{renderForm()}</CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
     </Fragment>
   )
 }

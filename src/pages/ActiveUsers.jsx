@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";    
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";    
 import Modal from 'react-modal'; // Import the Modal component  
+import { Video } from "lucide-react";
+import Loading from '../assets/Loading.gif' // Import the loading video
   
 // Register Chart.js components    
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);    
@@ -116,7 +118,11 @@ const App = () => {
     const closeModal = () => setIsModalOpen(false); // Function to close modal    
   
     if (loading) {    
-        return <div>Loading data...</div>;    
+        return (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <video src={Loading} autoPlay loop muted style={{ width: '50%' }} />
+            </div>
+        );    
     }    
     if (!chartData) {    
         return <div>Preparing chart data...</div>;    
@@ -193,4 +199,4 @@ const App = () => {
     );    
 };    
   
-export default App;    
+export default App;

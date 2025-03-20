@@ -28,6 +28,10 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background-color: none;
+  background-image: "src/assets/loginBg.jpg";
 }
 
 h1 {

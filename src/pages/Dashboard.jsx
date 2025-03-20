@@ -3,6 +3,7 @@ import { Row, Col, Card } from 'react-bootstrap';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import IncomeChart from './IncomeChart'
+import VideoComponet from './Videocomponent'
 // import App from './UsersByArea'
 // import ServiceRequestData from './ServiceRequestData';
 // import ActiveUsers from './ActiveUsers';
@@ -83,6 +84,13 @@ const Dashboard = () => {
           <Card className="dashboard-card">
             <Card.Body>
              <IncomeChart/>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md={12}>
+          <Card className="dashboard-card">
+            <Card.Body>
+             <VideoComponet/>
             </Card.Body>
           </Card>
         </Col>

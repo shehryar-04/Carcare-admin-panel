@@ -2,6 +2,7 @@ import React from 'react';
 import { Nav, Dropdown } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 import {
+
   FaChartBar,
   FaUsers,
   FaCar,
@@ -9,6 +10,7 @@ import {
   FaColumns,
   FaCalculator,
 } from 'react-icons/fa';
+import logo from './logo.png';
 
 const Sidebar = ({ toggleSidebar }) => {
   const location = useLocation();
@@ -35,8 +37,8 @@ const Sidebar = ({ toggleSidebar }) => {
 
   return (
     <div className='sidebar text-white' style={{ background: '#255B82' }}>
-      <div className='sidebar-header p-3'>
-        <h3>Car Services Admin</h3>
+      <div className='sidebar-header'>
+        <img src={logo} alt="Logo" style={{ width: '100%', backgroundColor:'white'}} />
       </div>
       <Nav className='flex-column'>
         {/* Menu Items */}

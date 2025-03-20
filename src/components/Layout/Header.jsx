@@ -6,6 +6,7 @@ import { auth } from "../../config/firebase";
 import { updatePassword, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
+
 const Header = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showUserModal, setShowUserModal] = useState(false);
@@ -62,7 +63,7 @@ const Header = () => {
       <Navbar bg="white" className="header">
         <Container fluid>
           <Navbar.Brand style={{ fontSize: "20px", fontWeight: "bold", fontFamily: "poppins", color: "#255B82" }}>
-            Car Services Admin
+            CarCare Admin
           </Navbar.Brand>
           <Nav className="ms-auto">
             <Nav.Item className="me-3">

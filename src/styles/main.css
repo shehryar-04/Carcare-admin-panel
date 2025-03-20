@@ -20,7 +20,7 @@
   width: calc(100% - 250px);
   min-height: 100vh;
   background-color: #f8f9fa;
-  padding: 20px;
+  /* padding: 20px; */
 }
 .sidebar-toggle {
   display: none;

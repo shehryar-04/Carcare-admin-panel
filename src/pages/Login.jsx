@@ -158,7 +158,7 @@ const Auth = () => {
 
   return (
     <Container fluid>
-      <Row className="min-vh-100 align-items-center justify-content-center bg-light" style={{width: '100%' }}>
+      <Row className="min-vh-100 align-items-center justify-content-center bg-none">
         <Col xs={18} sm={30} md={50} lg={100}>
           <Card className="shadow">
             <Card.Body className="p-4">

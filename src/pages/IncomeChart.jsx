@@ -174,7 +174,7 @@ const IncomeChart = ({ labelColor, gridLineColor }) => {
           </Button>  
         </div>  
         <div style={{ height: '450px' }}>  
-          {chartData ? <Line data={chartData} options={options} height={450} /> : <p>Loading chart...</p>}  
+          {chartData ? <Line data={chartData} options={options} height={450} /> : <p>Kindly Select a date range to know carcare earnings</p>}  
         </div>  
       </CardBody>  
     </Card>  
