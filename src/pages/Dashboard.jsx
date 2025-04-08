@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Card } from 'react-bootstrap';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../config/firebase';
-import IncomeChart from './IncomeChart'
-import VideoComponet from './Videocomponent'
-// import App from './UsersByArea'
-// import ServiceRequestData from './ServiceRequestData';
-// import ActiveUsers from './ActiveUsers';
-// import Products from './Products';
+import IncomeChart from './IncomeChart';
+import { User, FileText, Activity } from 'react-feather';
+import Loading from '../assets/loading.gif'
+import Lottie from 'lottie-react'
+import Loader from '../assets/Loading.json'
 
 const Dashboard = () => {
   const [stats, setStats] = useState({
@@ -48,54 +47,89 @@ const Dashboard = () => {
     <div>
       <h2 className="mb-4">Dashboard Overview</h2>
       <Row>
+        {/* Total Users Card */}
         <Col md={3}>
-          <Card className="dashboard-card">
-            <Card.Body>
-              <h5>Total Users</h5>
-              <h2>{stats.totalUsers}</h2>
+          <Card className="dashboard-card" style={{ backgroundImage: 'linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)' }}>
+            <Card.Body style={{ color: 'white' }}>
+              <Row className="align-items-center">
+                <Col xs={4}>
+                  <User size={40} color="white" />
+                </Col>
+                <Col xs={8}>
+                  <h5>Total Users</h5>
+                  <h2>{stats.totalUsers}</h2>
+                </Col>
+              </Row>
             </Card.Body>
           </Card>
         </Col>
+
+        {/* Total Vendors Card */}
         <Col md={3}>
-          <Card className="dashboard-card">
-            <Card.Body>
-              <h5>Total Vendors</h5>
-              <h2>{stats.totalVendors}</h2>
+          <Card className="dashboard-card" style={{ backgroundImage: 'linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%)' }}>
+            <Card.Body style={{ color: 'white' }}>
+              <Row className="align-items-center">
+                <Col xs={4}>
+                  <User size={40} color="white" />
+                </Col>
+                <Col xs={8}>
+                  <h5>Total Vendors</h5>
+                  <h2>{stats.totalVendors}</h2>
+                </Col>
+              </Row>
             </Card.Body>
           </Card>
         </Col>
+
+        {/* Total Requests Card */}
         <Col md={3}>
-          <Card className="dashboard-card">
-            <Card.Body>
-              <h5>Total Requests</h5>
-              <h2>{stats.totalRequests}</h2>
+          <Card className="dashboard-card" style={{ backgroundImage: 'linear-gradient(135deg, #00b09b 0%, #96c93d 100%)' }}>
+            <Card.Body style={{ color: 'white' }}>
+              <Row className="align-items-center">
+                <Col xs={4}>
+                  <FileText size={40} color="white" />
+                </Col>
+                <Col xs={8}>
+                  <h5>Total Requests</h5>
+                  <h2>{stats.totalRequests}</h2>
+                </Col>
+              </Row>
             </Card.Body>
           </Card>
         </Col>
+
+        {/* Active Requests Card */}
         <Col md={3}>
-          <Card className="dashboard-card">
-            <Card.Body>
-              <h5>Active Requests</h5>
-              <h2>{stats.activeRequests}</h2>
+          <Card className="dashboard-card" style={{ backgroundImage: 'linear-gradient(135deg, #ff512f 0%, #f09819 100%)' }}>
+            <Card.Body style={{ color: 'white' }}>
+              <Row className="align-items-center">
+                <Col xs={4}>
+                  <Activity size={40} color="white" />
+                </Col>
+                <Col xs={8}>
+                  <h5>Active Requests</h5>
+                  <h2>{stats.activeRequests}</h2>
+                </Col>
+              </Row>
             </Card.Body>
           </Card>
         </Col>
-        <Col md={12}>
+
+        <Col md={12} style={{ marginTop: 20 }}>
           <Card className="dashboard-card">
             <Card.Body>
-             <IncomeChart/>
+              <IncomeChart/>
             </Card.Body>
           </Card>
         </Col>
-        <Col md={12}>
+        <Col md={12} style={{ marginTop: 20 }}>
           <Card className="dashboard-card">
             <Card.Body>
-             <VideoComponet/>
+              <Lottie animationData={Loader}/>
             </Card.Body>
           </Card>
         </Col>
       </Row>
-     
     </div>
   );
 };

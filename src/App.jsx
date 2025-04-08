@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "./config/firebase";
 import AccessDenied from "./components/AccessDenied";
+import { hasPermission } from './config/roleConfig';
 
 // Layout and Route Components
 import DashboardLayout from "./components/Layout/DashboardLayout";
@@ -29,9 +30,6 @@ import Services from "./pages/ServiceData";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/main.css";
 
-// Import the RoleBasedRoute component
-import RoleBasedRoute from "./components/RoleProtected";
-
 function App() {
   const { isAuthenticated } = useSelector((state) => state.auth);
   const [role, setRole] = useState(null);
@@ -44,27 +42,42 @@ function App() {
         try {
           const docRef = doc(db, "admins", auth.currentUser.uid);
           const docSnap = await getDoc(docRef);
+          
+          // Set default verification to true if user is authenticated
+          let userVerification = true;
+          let fetchedRole = null;
+
           if (docSnap.exists()) {
-            const userVerification = docSnap.data().verification;
-            const fetchedRole = docSnap.data().role;
+            // Only override verification if explicitly set to false in database
+            userVerification = docSnap.data().verification !== false;
+            fetchedRole = docSnap.data().role;
             console.log("Fetched role:", fetchedRole);
             console.log("User verification:", userVerification);
-            setRole(fetchedRole);
-            setVerification(userVerification);
           } else {
-            console.error("No admin document found!");
-            setVerification(false); // Assume unverified if no data exists
+            console.log("No admin document found - using default verification");
           }
+          
+          setRole(fetchedRole);
+          setVerification(userVerification);
         } catch (error) {
           console.error("Error fetching role:", error);
-          setVerification(false); // Default to false on error
+          // Default to true on error to prevent lockout
+          setVerification(true);
         }
+      } else {
+        setVerification(false);
       }
       setLoading(false);
     };
 
     fetchRole();
   }, [isAuthenticated]);
+
+  const canAccessRoute = (path) => {
+    // Remove leading slash and get the first segment of the path
+    const route = path.replace(/^\//, '').split('/')[0] || 'dashboard';
+    return hasPermission(role, route);
+  };
 
   // 🔄 **Show loading screen while checking user data**
   if (loading) {
@@ -81,115 +94,37 @@ function App() {
         {/* Private Routes */}
         <Route element={<PrivateRoute />}>
           {verification ? (
-            // ✅ Verified users get access to the full dashboard
             <>
-              <Route
-                path="/"
-                element={
-                  <DashboardLayout>
-                    <Dashboard />
-                  </DashboardLayout>
-                }
-              />
-              <Route
-                path="/dashboard"
-                element={
-                  <DashboardLayout>
-                    <Dashboard />
-                  </DashboardLayout>
-                }
-              />
-              <Route
-                path="/serviceRequests"
-                element={
-                  <DashboardLayout>
-                    <ServiceRequests />
-                  </DashboardLayout>
-                }
-              />
-              <Route
-                path="/maps"
-                element={
-                  <DashboardLayout>
-                    <Maps />
-                  </DashboardLayout>
-                }
-              />
-              <Route
-                path="/Service"
-                element={
-                  <DashboardLayout>
-                    <Services />
-                  </DashboardLayout>
-                }
-              />
-              <Route
-                path="/vendors"
-                element={
-                  <DashboardLayout>
-                    <Vendors />
-                  </DashboardLayout>
-                }
-              />
-              <Route
-                path="/Forms"
-                element={
-                  <DashboardLayout>
-                    <Forms />
-                  </DashboardLayout>
-                }
-              />
-              <Route
-                path="/Admins"
-                element={
-                  <DashboardLayout>
-                    <Admins />
-                  </DashboardLayout>
-                }
-              />
-              <Route
-                path="/Products"
-                element={
-                  <DashboardLayout>
-                    <Products />
-                  </DashboardLayout>
-                }
-              />
-              <Route
-                path="/UsersByArea"
-                element={
-                  <DashboardLayout>
-                    <UsersByArea />
-                  </DashboardLayout>
-                }
-              />
-              <Route
-                path="/ActiveUsers"
-                element={
-                  <DashboardLayout>
-                    <ActiveUsers />
-                  </DashboardLayout>
-                }
-              />
-              <Route
-                path="/ServiceRequestData"
-                element={
-                  <DashboardLayout>
-                    <ServiceRequestData />
-                  </DashboardLayout>
-                }
-              />
-              <Route
-                path="/Reports"
-                element={
-                  <DashboardLayout>
-                    <Report />
-                  </DashboardLayout>
-                }
-              />
+              {/* Map through your routes and check permissions */}
+              {[
+                { path: '/', element: <Dashboard /> },
+                { path: '/dashboard', element: <Dashboard /> },
+                { path: '/serviceRequests', element: <ServiceRequests /> },
+                { path: '/maps', element: <Maps /> },
+                { path: '/Service', element: <Services /> },
+                { path: '/vendors', element: <Vendors /> },
+                { path: '/Forms', element: <Forms /> },
+                { path: '/Admins', element: <Admins /> },
+                { path: '/Products', element: <Products /> },
+                { path: '/UsersByArea', element: <UsersByArea /> },
+                { path: '/ActiveUsers', element: <ActiveUsers /> },
+                { path: '/ServiceRequestData', element: <ServiceRequestData /> },
+                { path: '/Reports', element: <Report /> },
+              ].map(({ path, element }) => (
+                <Route
+                  key={path}
+                  path={path}
+                  element={
+                    canAccessRoute(path) ? (
+                      <DashboardLayout>{element}</DashboardLayout>
+                    ) : (
+                      <AccessDenied />
+                    )
+                  }
+                />
+              ))}
             </>
           ) : (
-            // ❌ Unverified users get denied access to everything
             <Route path="*" element={<AccessDenied />} />
           )}
         </Route>
